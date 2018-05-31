@@ -72,7 +72,7 @@ The box has a special command, called `netboot`, that automatically:
 
 Try it! You'll feel like an hacker, without the hassle to type things on the keyboard. But what just happened? Below we're gonna explain the most important steps of this script.
 
-#### Going down into the rabbit hole: the iptables configuration
+#### Going down the rabbit hole: iptables configuration
 
 Iptables is a ugly beast, and here I'll try to explain what the rules do, since routing is particular important. To help explaining what's happening with the packets flow, keep in mind this image 
 
