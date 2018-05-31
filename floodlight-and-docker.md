@@ -70,9 +70,9 @@ The box has a special command, called `netboot`, that automatically:
 * adds the containers in the new network interface
 * pings the two containers three times
 
-Try it! You'll feel like an hacker, without the hassle to type things on the keyboard. But what just happened?
+Try it! You'll feel like an hacker, without the hassle to type things on the keyboard. But what just happened? Below we're gonna explain the most important steps of this script.
 
-#### Going into the rabbit hole: the iptables configuration
+#### Going down into the rabbit hole: the iptables configuration
 
 Iptables is a ugly beast, and here I'll try to explain what the rules do, since routing is particular important. To help explaining what's happening with the packets flow, keep in mind this image 
 
@@ -114,5 +114,35 @@ The last rule \(the most important we dare to say\) allows the packets coming fr
 > **SNAT:** A virtual state, matching if the original source address differs from the reply destination.  
 > **DNAT:** A virtual state, matching if the original destination differs from the reply source.
 
+Wrapping this long explanation up, we set iptables to act to alias the packages coming from our local network interface, `ovs-br1`, to the public network. Why have we done this? Because we're gonna attach floodlight next.
 
+#### Attaching floodlight \(ovs controller\) to our local network
+
+Now that our network is set up, and our containers can talk between each other and with the rest of the world, we can attach our ovs controller. Launch it with:
+
+```bash
+docker run -d -p 6653 -p 80:8080 --name=floodlight pierrecdn/floodlight
+```
+
+This will launch floodlight, and the UI will be accessible from the port 80. Floodlight, with the vanilla configuration, won't discover any node in the network until they start sending packages. By the way, we haven't instructed ovs that there is a new controller in town, so we have to set it with this command:
+
+```bash
+sudo ovs-vsctl set-controller ovs-br1 tcp:172.17.0.2:6653
+```
+
+`172.17.0.2` is not a random IP address, but that's the floodlight internal IP. You can retrieve yours typing:
+
+```bash
+docker inspect floodlight | grep IPAddress
+```
+
+At this point, ovs knows there is a controller to ask for routing packets, and floodlight is ready to accept incoming packages and instruct the switch accordingly. Actually, since we haven't configured floodlight yet, it won't do anything in particular, apart discovering new nodes when they sends packets. With the floodlight console opened, you can see this happening typing in the VM console:
+
+```bash
+docker exec container1 ping -c 10 192.168.1.2
+```
+
+Here `container1` will ping `container2` ten times. While this is happening, the two containers will talk to each other exchanges packages, that they will first go through the iptables rules and then they will pass through the floodlight controller, that finally it will see two new nodes in the network and it will register them, updating the UI. At the end, you'll be able to see the UI refreshing with two new members in the list.
+
+Yay! That's all, for now.
 
