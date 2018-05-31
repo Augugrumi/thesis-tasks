@@ -100,11 +100,11 @@ Basically, we use MASQUERADE to "fake the outgoing packet" going out from `ovs-b
 
 > Outgoing packets from a local network with unregistered IP addresses can be aliased to appear as if they came from an accessible IP address.
 
-The next iptables command appends \(`-A` flag\) in the FORWARD chain a rule stating that all the packets coming from `ovs-br1` have to go to the ACCEPT chain. The ACCEPT chain let the packages pass trough the firewall. Copying again from the [man page](http://ipset.netfilter.org/iptables.man.html), these are the firewall chain:
+The next iptables command appends \(`-A` flag\) in the FORWARD chain a rule stating that all the packets coming from `ovs-br1` have to go to the ACCEPT chain. The ACCEPT chain lets the packages pass trough the firewall. Copying again from the [man page](http://ipset.netfilter.org/iptables.man.html), these are the firewall chains:
 
 > **ACCEPT** means to let the packet through. **DROP** means to drop the packet on the floor. **QUEUE** means to pass the packet to userspace. \(How the packet can be received by a userspace process differs by the particular queue handler. 2.4.x and 2.6.x kernels up to 2.6.13 include the **ip\_queue** queue handler. Kernels 2.6.14 and later additionally include the **nfnetlink\_queue** queue handler. Packets with a target of QUEUE will be sent to queue number '0' in this case. Please also see the **NFQUEUE** target as described later in this man page.\) **RETURN** means stop traversing this chain and resume at the next rule in the previous \(calling\) chain. If the end of a built-in chain is reached or a rule in a built-in chain with target **RETURN** is matched, the target specified by the chain policy determines the fate of the packet.
 
-The last rule \(the most important we dare to say\) allows the packets coming from the local network we've created \(`ovs-br1`\) to the external one. In particular, it forwards only the packets that matches the state ESTABLISHED and RELATED. The _state_ is an iptables extension, able to recognize the type of packages are passing through the firewall. We're gonna copy-paste, again from the iptables [man page](http://ipset.netfilter.org/iptables-extensions.man.html), the explanation of these states:
+The last rule \(the most important we dare to say\) allows the packets coming from the local network we've created \(`ovs-br1`\) to the external one. In particular, it forwards only the packets that matches the state ESTABLISHED and RELATED. The _state_ is an iptables extension, able to recognize the type of packages passing through the firewall. We're gonna copy-paste, again from the iptables [man page](http://ipset.netfilter.org/iptables-extensions.man.html), the explanation of these states:
 
 > **INVALID:** The packet is associated with no known connection.  
 > **NEW:** The packet has started a new connection, or otherwise associated with a connection which has not seen packets in both directions.  
@@ -114,7 +114,7 @@ The last rule \(the most important we dare to say\) allows the packets coming fr
 > **SNAT:** A virtual state, matching if the original source address differs from the reply destination.  
 > **DNAT:** A virtual state, matching if the original destination differs from the reply source.
 
-Wrapping this long explanation up, we set iptables to act to alias the packages coming from our local network interface, `ovs-br1`, to the public network. Why have we done this? Because we're gonna attach floodlight next.
+Wrapping this long explanation up, we set up iptables to alias the packages coming from our local network interface \(`ovs-br1`\) and directed to go outside it, as they were created directly from the host. Why have we done this? Because we're gonna attach floodlight next.
 
 #### Attaching floodlight \(ovs controller\) to our local network
 
