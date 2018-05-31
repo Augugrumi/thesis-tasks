@@ -57,7 +57,7 @@ vagrant ssh
 # You should now ssh'ed in the VM
 ```
 
-Once you've copy-pasted all this boring stuff, you have a working sandbox. You can see the machine comes with a floodlight image already downloaded.
+Once you've copy-pasted all this boring stuff, you should have a working sandbox. You can see the machine comes with a floodlight image already downloaded.
 
 ### Fun stuff
 
