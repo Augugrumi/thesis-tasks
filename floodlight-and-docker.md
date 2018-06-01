@@ -30,7 +30,7 @@ After the initial configuration, it's time to messing around!
 
 After you've set up successfully your machine, we're ready to start. Go on your AWS console and create an EC2 micro instance, then delete it. This will also create a key pair \(keep it!\) and automatically set up a default security group, that we're gonna use.
 
-Now clone the `vagrantfiles` repository`:`
+Now clone the `vagrantfiles` repository:
 
 ```bash
 $ git clone https://github.com/Augugrumi/vagrantfiles.git
