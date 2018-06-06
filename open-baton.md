@@ -10,6 +10,7 @@ We assume that **docker** is installed on the machine in which you are gonna to 
 
 ## Useful links
 
+* [Open Baton minimal docker setup](https://github.com/openbaton/bootstrap/blob/f9d8ad8a1b25e95baae15da7612f2032bfcff20e/distributions/docker/compose/min_nomysql-compose.yml)
 * [Dummy Network Service Record](https://openbaton.github.io/documentation/dummy-NSR/)
 * [Dummy NSR docker compose file](https://openbaton.github.io/documentation/compose/dummy-ns.yml)
 * [Test Virtual Infrastructure Manager](https://openbaton.github.io/documentation/descriptors/vim-instance/test-vim-instance.json)
