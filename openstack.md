@@ -8,7 +8,7 @@ description: Aka the gate to hell
 
 ### Set up default vim
 
-In order to add new NFV, you need to have a VIM already set up. To set it up, you first need to login as `nfv_user` \(the default password is `devstack`\), then download the v3 openrc script, and then from the console include it \(with `source <namefile>`\). 
+In order to add new NFV, you need to have a VIM already set up. To set it up, you first need to login as `nfv_user` \(the default password is `devstack`\), then download the v3 openrc script, and then from the console include it \(with `source <namefile>`\).
 
 {% hint style="info" %}
 The openrc file should look like this:
@@ -85,6 +85,4 @@ tacker vim-register --description 'test' --config-file vim_config.yaml Site1
 After that, you should have the VIM in your list, like in the picture below.
 
 ![](.gitbook/assets/image%20%281%29.png)
-
-
 

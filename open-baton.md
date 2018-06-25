@@ -1,7 +1,3 @@
----
-description: Or how to become mad with Open Baton minimal setup.
----
-
 # Open Baton
 
 ## Prerequisites

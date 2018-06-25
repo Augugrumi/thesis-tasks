@@ -1,7 +1,3 @@
----
-description: How to run floodlight with docker
----
-
 # Floodlight and docker
 
 ## Prerequisites
@@ -33,7 +29,7 @@ After you've set up successfully your machine, we're ready to start. Go on your 
 Now clone the `vagrantfiles` repository:
 
 ```bash
-$ git clone https://github.com/Augugrumi/vagrantfiles.git
+$ git clone 
 ```
 
 {% hint style="info" %}
