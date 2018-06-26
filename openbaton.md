@@ -10,7 +10,7 @@ Openbaton is an alternative VIM that can be linked with Openstack. After some de
 
 ## Installation
 
-Opnabaton installation is pretty straight-forward. Open a terminal and execute the wizard made by the Openbaton team:
+Openbaton installation is pretty straight-forward. Open a terminal and execute the wizard made by the Openbaton team:
 
 ```bash
 sh <(curl -s http://get.openbaton.org/bootstrap) release
