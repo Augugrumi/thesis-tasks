@@ -3,6 +3,7 @@
 {% tabs %}
 {% tab title="General" %}
 * [ESTI Architecture](https://wiki.opnfv.org/display/mano/Architecture)
+* [Install docker and docker compose](https://gist.github.com/mzanella/8fcc98632cfdc6aaf2a72215c7d7b8df)
 {% endtab %}
 
 {% tab title="Documentation" %}
