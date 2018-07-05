@@ -216,6 +216,8 @@ You can watch the Openbaton log typing:
 docker-compose -f full-compose.yaml logs -f
 ```
 
+Please note that the startup phase could require some time. On top of that, to have decent performance we recommend you to use a machine with at least 16GB of RAM.
+
 ### Link Openbaton to Openstack
 
 In Openbaton the space where VNFs are deployed is called POP \(point of presence\). There can be multiple POPs, and you have to link them. Through the user interface, go to Manage PoPs -&gt; PoPs instances add one. You can add a PoP filling the forms or uploading a JSON. If you choose the later one, you can copy-paste the following:
