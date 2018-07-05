@@ -210,7 +210,7 @@ Launching this configuration is very simple. Put it in a folder, cd in it and ty
 env HOST_IP=<you machine ip> docker-compose -f full-compose.yaml up -d
 ```
 
-You can watch the openbaton log type:
+You can watch the Openbaton log typing:
 
 ```bash
 docker-compose -f full-compose.yaml logs -f
