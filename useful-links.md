@@ -21,6 +21,11 @@
 * [Video - Build a FloodLight SDN OpenFlow Controller Module](https://www.youtube.com/watch?v=v-64jQnTDsY)
 * [Programming Networks with OpenFlow](https://geni-app-developer-documentation.readthedocs.io/en/latest/examples/example-3.html)
 * [Transparent redirect](https://floodlight.atlassian.net/wiki/spaces/floodlightcontroller/pages/45645828/How+to+Perform+Transparent+Packet+Redirection+with+OpenFlow+and+Floodlight​)
+
+## Kubernetes
+
+* [Install kubernetes on ubuntu](https://www.techrepublic.com/article/how-to-quickly-install-kubernetes-on-ubuntu/)
+* [Network plugin not ready \(first time works suggestion of @ChineSilence\)](https://github.com/kubernetes/kubernetes/issues/48798)
 {% endtab %}
 {% endtabs %}
 
