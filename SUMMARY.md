@@ -3,7 +3,8 @@
 * [Introduction](README.md)
 * [Floodlight and docker](floodlight-and-docker.md)
 * [Open Baton](open-baton.md)
-* [Useful links](useful-links.md)
 * [Openstack](openstack.md)
 * [Openbaton](openbaton.md)
+* [Kubernetes](kubernetes.md)
+* [Useful links](useful-links.md)
 
