@@ -30,7 +30,13 @@ Our next step is to load different kenel modules, using `modprobe`:
 sudo sh -c 'modprobe dm_snapshot && modprobe dm_mirror && modprobe dm_thin_pool'
 ```
 
-To make this change permanent, add the lines above to your `/etc/rc.local`.
+To make this change permanent, add the line above to your `/etc/rc.local`.
+
+For all the nodes you installed glusterfs you need to apply a particular label in you Kubernetes cluster. In a terminal, type:
+
+```bash
+kubectl label node <node name> storagenode=glusterfs
+```
 
 [According the gluster-kubernetes setup guide](https://github.com/gluster/gluster-kubernetes/blob/master/docs/setup-guide.md), you should also check that the following ports are reachable:
 
