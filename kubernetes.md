@@ -6,6 +6,10 @@ description: A heaven for your containers
 
 ## Persistent Storage
 
+### Prerequisites
+
+Check if Python \(2.7\) is installed and available
+
 ### GlusterFS
 
 To enable persistent storage in Kubernetes with Glusterfs you need at least three nodes. As we've already written above, we deployed our Kubernetes cluster using CentOS 7.
