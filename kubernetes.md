@@ -4,13 +4,26 @@ description: A heaven for your containers
 
 # Kubernetes
 
+## Installing Kubernetes
+
+### Installing Kubernetes on Ubuntu 16.04 \(Xenial Xerus\)
+
+To install Kubernetes on Ubuntu 16.04 Xenial Xerus we develop a script available [on this page](https://github.com/Augugrumi/init-script/tree/master/kubernetes). It assumes you are inside on Openstack-CLI in order to find out some information on VM to which you specify the IP addresses.
+
+### Installing Kubernetes on CentOS
+
+Work in progress bro
+
 ## Persistent Storage
 
 ### Prerequisites
 
-Check if Python \(2.7\) is installed and available
+* A working installation of Kubernetes
+* Python \(2.7\) installed and available on all Kubernetes nodes
 
 ### GlusterFS
+
+#### GlusterFS on CentOS 7
 
 To enable persistent storage in Kubernetes with Glusterfs you need at least three nodes. As we've already written above, we deployed our Kubernetes cluster using CentOS 7.
 
@@ -155,6 +168,22 @@ Optionally, you can set it as default `StorageClass` with the following command:
 kubectl patch -f glusterstorageclass.yaml \
 -p'{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ```
+
+#### GlusterFS on Ubuntu 16.04.4 LTS \(Xenial Xerus\)
+
+We tried to install GlusterFS on Ubuntu 16.04.4 LTS but we failed. We followed the setup guide available [at this link](https://github.com/gluster/gluster-kubernetes/blob/master/docs/setup-guide.md) on Gluster [official repository](https://github.com/gluster). 
+
+The first problem we encountered was the installation of all dependencies. In fact installing from apt-get the glusterfs-server glusterd wont start. Finally installing `glusterfs-server`,  `glusterfs-client` and `glusterfs-common` we solved this first issue. At the end `glusted` was available on all Kubernetes slave nodes.
+
+We opened all other steps \(enabling ssh as root on all slave machine, that was not specified in the guide\) and we run the installation by the command:
+
+```bash
+./gk-deploy -s <path/to/your/private/key> --ssh-user root --ssh-port 22 topology.json -yv
+```
+
+As in the CentOS installation but the master node \(as we see in logs\) was not able to contact `glusterd` on nodes. We verified that all nodes were not on other gluster cluster, ports are not reachable and  ssh was not available but everything seemed to work. 
+
+At the end, as we does not have any strict requisites on the OS to use, we decided to do not proceed down to this road.
 
 ## Additional Tools
 
