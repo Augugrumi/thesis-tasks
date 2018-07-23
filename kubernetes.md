@@ -32,7 +32,8 @@ Since we're running our cluster on a Openstack environment, we attached one volu
 First of all, you need to install `gluster-server` on all the nodes that will join the storage and `gluster-fuse` to provide `mount.glusterfs` as an option to mount Gluster file systems. Open a terminal and type:
 
 ```bash
-sudo yum install -y centos-release-gluster glusterfs-server glusterfs-fuse
+sudo yum install -y centos-release-gluster && \
+sudo yum install -y glusterfs-server glusterfs-fuse
 ```
 
 Our next step is to load different kenel modules, using `modprobe`:
