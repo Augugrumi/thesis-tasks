@@ -12,7 +12,7 @@ To install Kubernetes on Ubuntu 16.04 Xenial Xerus we develop a script available
 
 ### Installing Kubernetes on CentOS
 
-Work in progress bro
+To install Kubernetes on CentOS 7 we develop a script available [on this page](https://github.com/Augugrumi/init-script/tree/centos/kubernetes). It assumes you are inside on Openstack-CLI in order to find out some information on VM to which you specify the IP addresses.
 
 ## Persistent Storage
 
@@ -32,7 +32,7 @@ Since we're running our cluster on a Openstack environment, we attached one volu
 First of all, you need to install `gluster-server` on all the nodes that will join the storage and `gluster-fuse` to provide `mount.glusterfs` as an option to mount Gluster file systems. Open a terminal and type:
 
 ```bash
-sudo yum install -y centos-release-gluster gluster-server gluster-fuse
+sudo yum install -y centos-release-gluster glusterfs-server glusterfs-fuse
 ```
 
 At this point, enable the `glusterd` daemon to start at every system start:
@@ -47,7 +47,7 @@ Our next step is to load different kenel modules, using `modprobe`:
 sudo sh -c 'modprobe dm_snapshot && modprobe dm_mirror && modprobe dm_thin_pool'
 ```
 
-To make this change permanent, add the line above to your `/etc/rc.local`.
+To make this change permanent, add the line above to your `/etc/rc.local`. \(With `lsmod | grep <name>` you can check if modules are loaded.\)
 
 For all the nodes you installed glusterfs you need to apply a particular label in you Kubernetes cluster. In a terminal, type:
 
