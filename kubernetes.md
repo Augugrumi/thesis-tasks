@@ -47,7 +47,8 @@ Our next step is to load different kenel modules, using `modprobe`:
 sudo sh -c 'modprobe dm_snapshot && modprobe dm_mirror && modprobe dm_thin_pool'
 ```
 
-To make this change permanent, add the line above to your `/etc/rc.local`. \(With `lsmod | grep <name>` you can check if modules are loaded.\)
+To make this change permanent, add the line above to your `/etc/rc.local`.   
+Note: with `lsmod | grep <name>` you can check if modules are loaded.
 
 For all the nodes you installed glusterfs you need to apply a particular label in you Kubernetes cluster. In a terminal, type:
 
