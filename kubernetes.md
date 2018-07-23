@@ -35,12 +35,6 @@ First of all, you need to install `gluster-server` on all the nodes that will jo
 sudo yum install -y centos-release-gluster glusterfs-server glusterfs-fuse
 ```
 
-At this point, enable the `glusterd` daemon to start at every system start:
-
-```bash
-sudo systemctl start glusterd && sudo systemctl enable glusterd
-```
-
 Our next step is to load different kenel modules, using `modprobe`:
 
 ```bash
@@ -49,6 +43,12 @@ sudo sh -c 'modprobe dm_snapshot && modprobe dm_mirror && modprobe dm_thin_pool'
 
 To make this change permanent, add the line above to your `/etc/rc.local`.   
 Note: with `lsmod | grep <name>` you can check if modules are loaded.
+
+At this point, enable the `glusterd` daemon to start at every system start:
+
+```bash
+sudo systemctl start glusterd && sudo systemctl enable glusterd
+```
 
 For all the nodes you installed glusterfs you need to apply a particular label in you Kubernetes cluster. In a terminal, type:
 
