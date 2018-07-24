@@ -42,8 +42,17 @@ Our next step is to load different kenel modules, using `modprobe`:
 sudo sh -c 'modprobe dm_snapshot && modprobe dm_mirror && modprobe dm_thin_pool'
 ```
 
-To make this change permanent, add the line above to your `/etc/rc.local`.   
-Note: with `lsmod | grep <name>` you can check if modules are loaded.
+To make this change permanent, create a new file in `/etc/modules-load.d/gluster.conf` with the following content:
+
+{% code-tabs %}
+{% code-tabs-item title="gluster.conf" %}
+```text
+dm_snapshot
+dm_mirror
+dm_thin_pool
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
 
 At this point, enable the `glusterd` daemon to start at every system start:
 
