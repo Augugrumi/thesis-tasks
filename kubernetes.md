@@ -186,7 +186,7 @@ git clone https://github.com/gluster/gluster-kubernetes.git
 cd gluster-kubernetes/deploy
 ```
 
-We're reaching our goal, hold on! Now we need to define our tolopoly. To do so, create a `tolopogy.json` from the sample \(`topology.json.sample`\) and edit to fit your neccessities. Here, we report our:
+We're reaching our goal, hold on! Now we need to define our topology. To do so, create a `tolopogy.json` from the sample \(`topology.json.sample`\) and edit to fit your necessities. Here, we report our:
 
 {% code-tabs %}
 {% code-tabs-item title="topology.json" %}
