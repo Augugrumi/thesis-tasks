@@ -35,7 +35,9 @@ A pod can have different conditions too:
 Since pods for their nature are highly volatile, applications that use them can not rely on their IP address. To solve this problem, the Service implementation in Kubernetes assure a stable IP, even if different pods in this service crash and gets restarted by a ReplicaSet \(witch will not be explain in this guide, but it basically scale up and down pods - [more info here](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/)\)
 
 Citing the [official documentation](https://kubernetes.io/docs/concepts/services-networking/service/), the Service is:  
-_A Kubernetes `Service` is an abstraction which defines a logical set of `Pods` and a policy by which to access them - sometimes called a micro-service._
+_A Kubernetes Service is an abstraction which defines a logical set of Pods and a policy by which to access them - sometimes called a micro-service._
+
+![](.gitbook/assets/module_04_services.png)
 
 #### Volume
 
