@@ -114,6 +114,8 @@ We first tried to install Kubernetes on Ubuntu, is the distro we're more familia
 
 ![](.gitbook/assets/glusterkube.png)
 
+{% tabs %}
+{% tab title="CentOS" %}
 #### GlusterFS on CentOS 7
 
 To enable persistent storage in Kubernetes with Glusterfs you need at least three nodes. As we've already written above, we deployed our Kubernetes cluster using CentOS 7.
@@ -271,6 +273,16 @@ kubectl patch -f glusterstorageclass.yaml \
 -p'{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ```
 
+Here you can additional sources:
+
+{% embed data="{\"url\":\"https://askubuntu.com/questions/299676/how-to-install-3rd-party-module-so-that-it-is-loaded-on-boot\",\"type\":\"link\",\"title\":\"How to install 3rd party module so that it is loaded on boot?\",\"description\":\"I have a third party module to go with a frame grabber.  I\'ve downloaded the kernel source, followed the vendor\'s instructions to compile it, and have the resulting module, arvdrv.ko, sitting in a ...\",\"icon\":{\"type\":\"icon\",\"url\":\"https://cdn.sstatic.net/Sites/askubuntu/img/apple-touch-icon.png?v=e16e1315edd6\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://cdn.sstatic.net/Sites/askubuntu/img/apple-touch-icon@2.png?v=c492c9229955\",\"width\":316,\"height\":316,\"aspectRatio\":1}}" %}
+
+{% embed data="{\"url\":\"https://www.youtube.com/watch?v=uaNZx2O9ihc\",\"type\":\"video\",\"title\":\"Provision Gluster Storage with REST API using Heketi\",\"description\":\"https://github.com/heketi/heketi\",\"icon\":{\"type\":\"icon\",\"url\":\"https://www.youtube.com/yts/img/favicon\_144-vfliLAfaB.png\",\"width\":144,\"height\":144,\"aspectRatio\":1},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://i.ytimg.com/vi/uaNZx2O9ihc/maxresdefault.jpg\",\"width\":1280,\"height\":720,\"aspectRatio\":0.5625},\"embed\":{\"type\":\"player\",\"url\":\"https://www.youtube.com/embed/uaNZx2O9ihc?rel=0&showinfo=0\",\"html\":\"<div style=\\\"left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.2493%;\\\"><iframe src=\\\"https://www.youtube.com/embed/uaNZx2O9ihc?rel=0&amp;showinfo=0\\\" style=\\\"border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;\\\" allowfullscreen scrolling=\\\"no\\\"></iframe></div>\",\"aspectRatio\":1.7778}}" %}
+
+{% embed data="{\"url\":\"https://blog.lwolf.org/post/how-i-deployed-glusterfs-cluster-to-kubernetes/\",\"type\":\"link\",\"title\":\"Two days of pain or how I deployed GlusterFS cluster to Kubernetes\",\"description\":\"I spent last two days installing GlusterFS storage on top of my Kubernetes. It took much more time and effort than it should. I faced all kinds of problems, some if which were not obvious and took a lot of googling. So I decided to write this post. Hopefully it will save some time for somebody. I was playing with helm. Trying to assemble a complex application with several dependencies from official chart repository.\"}" %}
+{% endtab %}
+
+{% tab title="Ubuntu" %}
 #### GlusterFS on Ubuntu 16.04.4 LTS \(Xenial Xerus\)
 
 We tried to install GlusterFS on Ubuntu 16.04.4 LTS but we failed. We followed the setup guide available [at this link](https://github.com/gluster/gluster-kubernetes/blob/master/docs/setup-guide.md) on Gluster [official repository](https://github.com/gluster). 
@@ -286,6 +298,8 @@ We opened all other steps \(enabling ssh as root on all slave machine, that was 
 As in the CentOS installation but the master node \(as we see in logs\) was not able to contact `glusterd` on nodes. We verified that all nodes were not on other gluster cluster, ports are not reachable and  ssh was not available but everything seemed to work. 
 
 At the end, as we does not have any strict requisites on the OS to use, we decided to do not proceed down to this road.
+{% endtab %}
+{% endtabs %}
 
 ## Load balancing
 
