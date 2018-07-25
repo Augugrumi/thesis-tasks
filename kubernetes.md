@@ -37,7 +37,7 @@ Since pods for their nature are highly volatile, applications that use them can 
 Citing the [official documentation](https://kubernetes.io/docs/concepts/services-networking/service/), the Service is:  
 _A Kubernetes Service is an abstraction which defines a logical set of Pods and a policy by which to access them - sometimes called a micro-service._
 
-![](.gitbook/assets/module_04_services.png)
+![Example of a service](.gitbook/assets/module_04_services.png)
 
 #### Volume
 
@@ -53,7 +53,7 @@ Namespaces are intend to be used when there are multiple users using the cluster
 
 A node is the building block for a Kubernetes cluster. Every must have at least the kubelet daemon \(to manage kubernetes functionalities\) and a container manager \(e.g. Docker, VirtualBox\) running. A node runs pods and can communicate with other nodes in the same cluster
 
-![](.gitbook/assets/module_03_nodes.png)
+![Schema illustrating the elements in a node](.gitbook/assets/module_03_nodes.png)
 
 #### Master
 
@@ -79,13 +79,29 @@ Additional information about Flannel, Kubernetes and Docker networking can be fo
 
 We performed our Kubernetes installation in a Openstack environment. Since we used the Openstack of our school department, the administrator have given us a virtual machine, Openstack-CLI, to perform cli operations. From now, our scripts assume you're in a machine with access to openstack, and that you have sourced your openrc.sh script before continuing.
 
-### Installing Kubernetes on Ubuntu 16.04 \(Xenial Xerus\)
+We performed our first installation with Ubuntu, but since it was not fully successful, we changed distro with CentOS. In this tab you can find the two versions.
 
-We first tried to install Kubernetes on Ubuntu, is the distro we're more familiar with. To install Kubernetes on Ubuntu 16.04 Xenial Xerus we develop a script available [on this page](https://github.com/Augugrumi/init-script/tree/master/kubernetes).  Please note the this is not a complete installation! We were not able to get GlusterFS working with Ubuntu, thus we changed distro with CentOS.
+{% tabs %}
+{% tab title="CentOS" %}
+
 
 ### Installing Kubernetes on CentOS
 
-To install Kubernetes on CentOS 7 we develop a script available [on this page](https://github.com/Augugrumi/init-script/tree/centos/kubernetes). With CentOS is possible to have a complete installation with PersistendStorage correctly set.
+To install Kubernetes on CentOS 7 we develop a script available [on this page](https://github.com/Augugrumi/init-script/tree/centos/kubernetes). With CentOS is possible to have a complete installation with a GlusterFS-PersistendStorage correctly set.
+
+We haven't made up nothing, but we've googled a lot before coming to this solution. Here are our sources:
+
+{% embed data="{\"url\":\"https://www.howtoforge.com/tutorial/centos-kubernetes-docker-cluster/\",\"type\":\"link\",\"title\":\"How to Install a Kubernetes Docker Cluster on CentOS 7\",\"description\":\"In this tutorial, I will show you step-by-step how to install and configure Kubernetes and Docker on CentOS 7. Kubernetes is an open source platform f...\",\"icon\":{\"type\":\"icon\",\"url\":\"https://www.howtoforge.com/favicon.ico\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://www.howtoforge.com/images/teaser/centos.gif\",\"width\":42,\"height\":40,\"aspectRatio\":0.9523809523809523}}" %}
+
+{% embed data="{\"url\":\"https://github.com/kubernetes/kubernetes/issues/60869\",\"type\":\"link\",\"title\":\"kube-proxy can\'t load xz compressed kernel ip\_vs module · Issue \#60869 · kubernetes/kubernetes\",\"description\":\"Is this a BUG REPORT or FEATURE REQUEST?: /kind bug What happened: kube-proxy failed to load ip\_vs.ko.xz module What you expected to happen: compressed kernel module ip\_vs could loaded by kube-prox...\",\"icon\":{\"type\":\"icon\",\"url\":\"https://github.com/fluidicon.png\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://avatars1.githubusercontent.com/u/714445?s=400&v=4\",\"width\":400,\"height\":400,\"aspectRatio\":1}}" %}
+{% endtab %}
+
+{% tab title="Ubuntu" %}
+### Installing Kubernetes on Ubuntu 16.04 \(Xenial Xerus\)
+
+We first tried to install Kubernetes on Ubuntu, is the distro we're more familiar with. To install Kubernetes on Ubuntu 16.04 Xenial Xerus we develop a script available [on this page](https://github.com/Augugrumi/init-script/tree/master/kubernetes).  Please note the this is not a complete installation! We were not able to get GlusterFS working with Ubuntu, thus we changed distro with CentOS.
+{% endtab %}
+{% endtabs %}
 
 ## Persistent Storage
 
@@ -95,6 +111,8 @@ To install Kubernetes on CentOS 7 we develop a script available [on this page](h
 * Python \(2.7\) installed and available on all Kubernetes nodes
 
 ### GlusterFS
+
+![](.gitbook/assets/glusterkube.png)
 
 #### GlusterFS on CentOS 7
 
