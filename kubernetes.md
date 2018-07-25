@@ -77,13 +77,15 @@ Additional information about Flannel, Kubernetes and Docker networking can be fo
 
 ## Installing Kubernetes
 
+We performed our Kubernetes installation in a Openstack environment. Since we used the Openstack of our school department, the administrator have given us a virtual machine, Openstack-CLI, to perform cli operations. From now, our scripts assume you're in a machine with access to openstack, and that you have sourced your openrc.sh script before continuing.
+
 ### Installing Kubernetes on Ubuntu 16.04 \(Xenial Xerus\)
 
-To install Kubernetes on Ubuntu 16.04 Xenial Xerus we develop a script available [on this page](https://github.com/Augugrumi/init-script/tree/master/kubernetes). It assumes you are inside on Openstack-CLI in order to find out some information on VM to which you specify the IP addresses.
+We first tried to install Kubernetes on Ubuntu, is the distro we're more familiar with. To install Kubernetes on Ubuntu 16.04 Xenial Xerus we develop a script available [on this page](https://github.com/Augugrumi/init-script/tree/master/kubernetes).  Please note the this is not a complete installation! We were not able to get GlusterFS working with Ubuntu, thus we changed distro with CentOS.
 
 ### Installing Kubernetes on CentOS
 
-To install Kubernetes on CentOS 7 we develop a script available [on this page](https://github.com/Augugrumi/init-script/tree/centos/kubernetes). It assumes you are inside on Openstack-CLI in order to find out some information on VM to which you specify the IP addresses.
+To install Kubernetes on CentOS 7 we develop a script available [on this page](https://github.com/Augugrumi/init-script/tree/centos/kubernetes). With CentOS is possible to have a complete installation with PersistendStorage correctly set.
 
 ## Persistent Storage
 
