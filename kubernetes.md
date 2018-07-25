@@ -77,6 +77,41 @@ Additional information about Flannel, Kubernetes and Docker networking can be fo
 
 [https://www.sdxcentral.com/cloud/containers/definitions/what-is-coreos-flannel-definition/](https://www.sdxcentral.com/cloud/containers/definitions/what-is-coreos-flannel-definition/)
 
+### Focusing on Storage
+
+This section is based on official Kubernetes documentation on [persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) and [from this site](https://thenewstack.io/strategies-running-stateful-applications-kubernetes-persistent-volumes-claims/).
+
+#### Volumes, Claims and Classes
+
+Managing compute and storage are totally different problems and in order to abstract the last one Kubernetes relies on **PersistantVolume** and **PersistantVolumeClaim** resources.
+
+A PersistantVolume \(**PV**\) is something similar to a  node, in fact is a piece of storage provided by the administrator: it captures the details of the implementation of the storage and has a lifecycle that is independent of any individual pod. To not expose developers to storage boring details admins can expose different PV types through **StorageClasses**.
+
+A PersistantVolumeClaim \(**PVC**\) instead is a request for storage and it is similar a pod: instead of requesting memory and CPU, a PVC requests certain size and access mode to storage.
+
+![](.gitbook/assets/kubernetes_pvc.png)
+
+It is important to understand the difference on **Volumes** and **PersistantVolumes**. ****The former is something like Docker volumes, used for persistence, host-based or on external block storage devices but a user doesn't expect resources be reserved before using volumes. In persistent volumes and claims, there is a strict enforcement of resource utilization dictated by the policy defined during the creation of resources. Kubernetes pod can use claims as volumes.
+
+**StorageClasses** are a way to describe different type of storage that can be used. Different classes can be used to describe different levels of service or policies. PVCs that don't specify a paticular class can use the default one: to define it you can use annotation `"storageclass.kubernetes.io/is-default-class":"true"`, as for instance:
+
+```text
+kubectl patch storageclass glusterfs-storage -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+```
+
+  
+For more information on different provisioners, policies and parameters see this [link](https://kubernetes.io/docs/concepts/storage/storage-classes/).
+
+
+
+#### Lifecycle
+
+1. **Provisioning**: there are 2 ways: statically or dynamically. _Static_ means that an administrator creates some PVs that are available for consumption. _Dynamic_ means that the cluster dynamically try to provide a volume that matches a PVC. This is done with _StorageClasses_: a claim requests storage for a certain storage class that can be provisioned. The class `""`  disable dynamic provisioning.
+2. **Binding**: a user requests a certain amount of storage with a claim and a control loop in the master look for a PV that can bind the claim. In case of dynamic provisioning the loop always bind a PVC to a PV, otherwise user will always get at least what they asked for, but the volume may be larger. Claims can remain unbound if a matching volume does not exists. 
+3. **Using**: after the binding phase the pod start using the volume \(PVC is described in the pod yaml, [at this link the syntax](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#claims-as-volumes)\)'
+4. **Releasing**: when an application is done with using the volume, developers can delete the PVC objects through the API, releasing the claim. This step will initiate the reclamation process.
+5. **Reclaiming**: this phase is defined as a policy by the administrators. The reclaim policy for a PersistentVolume tells the cluster what to do with the volume after it has been released of its claim. Persistent volumes can either be _retained_, _recycled_ or _deleted_. 
+
 ## Installing Kubernetes
 
 We performed our Kubernetes installation in a Openstack environment. Since we used the Openstack of our school department, the administrator have given us a virtual machine, Openstack-CLI, to perform cli operations. From now, our scripts assume you're in a machine with access to openstack, and that you have sourced your openrc.sh script before continuing.
@@ -306,16 +341,6 @@ At the end, as we does not have any strict requisites on the OS to use, we decid
 ## Load balancing
 
 ### Ingress
-
-Resources
-
-{% embed data="{\"url\":\"https://www.youtube.com/watch?v=GDm-7BlmPPg\",\"type\":\"video\",\"title\":\"Make Ingress-Nginx Work for you, and the Community - Fernando Diaz, IBM \(Any Skill Level\)\",\"description\":\"Want to view more sessions and keep the conversations going?  Join us for KubeCon + CloudNativeCon North America in Seattle, December 11 - 13, 2018 \(http://bit.ly/KCCNCNA18\) or in Shanghai, November 14-15 \(http://bit.ly/kccncchina18\).\\n\\nMake Ingress-Nginx Work for you, and the Community - Fernando Diaz, IBM \(Any Skill Level\)\\n\\nHave you been using Ingress-Nginx in your deployment and have features you wish to Contribute to the community, but are unsure how? Don\'t worry with the easy to follow session, you\'ll be up and running in no time. This session is perfect for beginners or community experts alike who wish to get more involved with Nginx-Ingress. From our demos, you\'ll learn: 1. How the ingress-controller works, from the internals to the templates. 2. How to add a simple feature, eg. Annotation, ConfigMap config change. 3. Building and Deploying the Ingress Controller and description of resources. 4. Configuring the Ingress Controller using Annotations and the Config Map. 5. Tips for Contributing back.\\n\\nAbout Fernando\\nFernando Diaz is an active contributor to Kubernetes, mainly focusing on Ingress-Nginx. Fernando is currently a Cloud Developer for IBM and works on the IBM Cloud Container Service primarily focusing on ingress. In the past Fernando was an OpenStack Core Contributor, focusing on Barbican\(Key Management\) Development. He has spoken and held workshops at several OpenStack Summits. Born and raised in Miami, Florida, Fernando received his B.ASc. in Computer Science at Florida International University. Currently resides in Austin, Texas and helps keep Austin weird.\",\"icon\":{\"type\":\"icon\",\"url\":\"https://www.youtube.com/yts/img/favicon\_144-vfliLAfaB.png\",\"width\":144,\"height\":144,\"aspectRatio\":1},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://i.ytimg.com/vi/GDm-7BlmPPg/maxresdefault.jpg\",\"width\":1280,\"height\":720,\"aspectRatio\":0.5625},\"embed\":{\"type\":\"player\",\"url\":\"https://www.youtube.com/embed/GDm-7BlmPPg?rel=0&showinfo=0\",\"html\":\"<div style=\\\"left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.2493%;\\\"><iframe src=\\\"https://www.youtube.com/embed/GDm-7BlmPPg?rel=0&amp;showinfo=0\\\" style=\\\"border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;\\\" allowfullscreen scrolling=\\\"no\\\"></iframe></div>\",\"aspectRatio\":1.7778}}" %}
-
-{% embed data="{\"url\":\"https://github.com/nginxinc/kubernetes-ingress/blob/master/docs/installation.md\",\"type\":\"link\",\"title\":\"nginxinc/kubernetes-ingress\",\"description\":\"kubernetes-ingress - NGINX and  NGINX Plus Ingress Controllers for Kubernetes\",\"icon\":{\"type\":\"icon\",\"url\":\"https://github.com/fluidicon.png\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://avatars0.githubusercontent.com/u/8629072?s=400&v=4\",\"width\":110,\"height\":110,\"aspectRatio\":1}}" %}
-
-{% embed data="{\"url\":\"https://kubernetes.github.io/ingress-nginx/\",\"type\":\"link\",\"title\":\"NGINX Ingress Controller\",\"icon\":{\"type\":\"icon\",\"url\":\"https://kubernetes.github.io/ingress-nginx/assets/images/favicon.png\",\"aspectRatio\":0}}" %}
-
-{% embed data="{\"url\":\"https://blog.getambassador.io/kubernetes-ingress-nodeport-load-balancers-and-ingress-controllers-6e29f1c44f2d\",\"type\":\"link\",\"title\":\"Kubernetes Ingress 101: NodePort, Load Balancers, and Ingress Controllers\",\"description\":\"This article will introduce the three general strategies in Kubernetes for ingress, and the tradeoffs with each approach.\",\"icon\":{\"type\":\"icon\",\"url\":\"https://cdn-images-1.medium.com/fit/c/304/304/1\*5K3tnV4TXOeYzWWtI6giwQ.png\",\"width\":152,\"height\":152,\"aspectRatio\":1},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://cdn-images-1.medium.com/max/2000/1\*N13z5Vqm2XMvvaHzhwIfpw.jpeg\",\"width\":2000,\"height\":1333,\"aspectRatio\":0.6665}}" %}
 
 ## Additional Tools
 
