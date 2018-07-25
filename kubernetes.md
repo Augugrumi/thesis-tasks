@@ -126,7 +126,7 @@ We performed our first installation with Ubuntu, but since it was not fully succ
 
 To install Kubernetes on CentOS 7 we develop a script available [on this page](https://github.com/Augugrumi/init-script/tree/centos/kubernetes). With CentOS is possible to have a complete installation with a GlusterFS-PersistentStorage correctly set.
 
-After there is an explanation for the most important part of the scripts.
+After there is an explanation for the most important part of the scripts. The script [on\_openstack\_cli.sh](https://github.com/Augugrumi/init-script/raw/centos/kubernetes/on_openstack_cli.sh) main aim is to run other file retrieving information using even `nova` commands.
 
 First is needed to install all the software needed an for this the script [install\_kubectl\_repo.sh](https://raw.githubusercontent.com/Augugrumi/init-script/centos/kubernetes/install_kubectl_repo.sh) was created. This only call another script and wait until all machine are ready. The other script is [bootstrap.sh](https://raw.githubusercontent.com/Augugrumi/vagrantfiles/oldversion/kubernetes/centos/bootstrap.sh) whose aim is to configure the machine and the install  the necessary software.   
 Boostrap script first **disable SELinux** on all machines \(needed for Kubernetes networking\)
@@ -163,7 +163,7 @@ In the end the script install `docker`, `device-mapper-persistent-data`, `lvm2`,
 
 After rebooting all the machine, the installation go on adding in the `/etc/hosts` file of all node that will be part of the Kubernetes cluster the IP and the name of all the nodes.
 
-After the installation continues in the **master** node. We run kubeadm by the command
+After the installation continues in the **master** node, with the [script on\_master.sh](https://raw.githubusercontent.com/Augugrumi/init-script/centos/kubernetes/on_master.sh). We run `kubeadm` by the command
 
 ```text
 sudo kubeadm init --apiserver-advertise-address=<ip-of-the-master> --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors cri | grep "kubeadm join" > /home/centos/joincommand
