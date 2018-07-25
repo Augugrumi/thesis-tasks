@@ -315,6 +315,8 @@ Resources
 
 {% embed data="{\"url\":\"https://kubernetes.github.io/ingress-nginx/\",\"type\":\"link\",\"title\":\"NGINX Ingress Controller\",\"icon\":{\"type\":\"icon\",\"url\":\"https://kubernetes.github.io/ingress-nginx/assets/images/favicon.png\",\"aspectRatio\":0}}" %}
 
+{% embed data="{\"url\":\"https://blog.getambassador.io/kubernetes-ingress-nodeport-load-balancers-and-ingress-controllers-6e29f1c44f2d\",\"type\":\"link\",\"title\":\"Kubernetes Ingress 101: NodePort, Load Balancers, and Ingress Controllers\",\"description\":\"This article will introduce the three general strategies in Kubernetes for ingress, and the tradeoffs with each approach.\",\"icon\":{\"type\":\"icon\",\"url\":\"https://cdn-images-1.medium.com/fit/c/304/304/1\*5K3tnV4TXOeYzWWtI6giwQ.png\",\"width\":152,\"height\":152,\"aspectRatio\":1},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://cdn-images-1.medium.com/max/2000/1\*N13z5Vqm2XMvvaHzhwIfpw.jpeg\",\"width\":2000,\"height\":1333,\"aspectRatio\":0.6665}}" %}
+
 ## Additional Tools
 
 ### Helm
