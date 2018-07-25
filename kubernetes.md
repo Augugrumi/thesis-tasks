@@ -124,7 +124,93 @@ We performed our first installation with Ubuntu, but since it was not fully succ
 
 ### Installing Kubernetes on CentOS
 
-To install Kubernetes on CentOS 7 we develop a script available [on this page](https://github.com/Augugrumi/init-script/tree/centos/kubernetes). With CentOS is possible to have a complete installation with a GlusterFS-PersistendStorage correctly set.
+To install Kubernetes on CentOS 7 we develop a script available [on this page](https://github.com/Augugrumi/init-script/tree/centos/kubernetes). With CentOS is possible to have a complete installation with a GlusterFS-PersistentStorage correctly set.
+
+After there is an explanation for the most important part of the scripts.
+
+First is needed to install all the software needed an for this the script [install\_kubectl\_repo.sh](https://raw.githubusercontent.com/Augugrumi/init-script/centos/kubernetes/install_kubectl_repo.sh) was created. This only call another script and wait until all machine are ready. The other script is [bootstrap.sh](https://raw.githubusercontent.com/Augugrumi/vagrantfiles/oldversion/kubernetes/centos/bootstrap.sh) whose aim is to configure the machine and the install  the necessary software.   
+Boostrap script first **disable SELinux** on all machines \(needed for Kubernetes networking\)
+
+```text
+sudo setenforce 0
+sudo sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
+```
+
+then **enable br\_netfilter** module \(needed for Kubernetes networking\)
+
+```text
+sudo modprobe br_netfilter
+sudo sh -c 'echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables'
+```
+
+**Switch off the swap** by the commands
+
+```text
+sudo swapoff -a
+sudo sed -i '/swap/d' /etc/fstab
+```
+
+And finally add `rbd`, `ip_vs`, `ip_vs_rr`, `ip_vs_wrr`, `ip_vs_sh`, `dm_snapshot`, `dm_mirror` and `dm_thin_pool` to modules that will be loaded to machine startup.
+
+```text
+sudo sh -c 'echo -e "rbd\nip_vs\nip_vs_rr\nip_vs_wrr\nip_vs_sh" >  /etc/modules-load.d/ip_vs.conf'
+sudo sh -c 'echo -e "dm_snapshot\ndm_mirror\ndm_thin_pool" >  /etc/modules-load.d/gluster.conf'
+```
+
+Note: Last 3 modules will be useful in the case that you want to install GlusterFS on your machines.
+
+In the end the script install `docker`, `device-mapper-persistent-data`, `lvm2`, `kubelet`, `kubectl` and `kubeadm` and start \(and enable\) `docker` and `kubelet` services.
+
+After rebooting all the machine, the installation go on adding in the `/etc/hosts` file of all node that will be part of the Kubernetes cluster the IP and the name of all the nodes.
+
+After the installation continues in the **master** node. We run kubeadm by the command
+
+```text
+sudo kubeadm init --apiserver-advertise-address=<ip-of-the-master> --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors cri | grep "kubeadm join" > /home/centos/joincommand
+```
+
+Saving part of the output that will be necessary for other nodes to join the cluster.  
+Note 1:`--pod-network-cidr` depends on which agent you want to use to configure Kubernetes network. We choose Flannel se we put `10.244.0.0/16`.  
+Note 2: we don't know at the moment why some preflight errors was launched by the command and in order to do so \(since everything seems working\) we added `--ignore-preflight-errors cri` to go on.  
+This save in the `joincommand` file the command to be run on slave node to join the cluster.  
+  
+And after give the following commands to create the folder needed by Kubernetes
+
+```text
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+
+Then wait for all pods that are ready \(`kubectl get pods --all-namespaces`\).
+
+Following, install [Flannel](https://github.com/coreos/flannel) for the networking and wait that it is up.
+
+```text
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
+```
+
+And then it is possible to setup the dashboard to access K8s resources
+
+```text
+kubectl create serviceaccount dashboard -n default
+  kubectl create clusterrolebinding dashboard-admin -n default \
+   --clusterrole=cluster-admin \
+   --serviceaccount=default:dashboard
+  kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode >  secret.txt
+  screen -dmS kubectl_proxy_screen bash
+  screen -S kubectl_proxy_screen -X stuff "kubectl proxy
+  "
+```
+
+With this command we make the dashboad accessible on port 8001 of the master node at this URL `https://<master-ip>:<apiserver-port>/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/`
+
+The previous command also the token to access the dashboard on `secret.txt` file on the home folder of the master node. 
+
+The last thing to do is to make other node join the cluster, using the `joincommand` file that we created before.  
+   
+
 
 We haven't made up nothing, but we've googled a lot before coming to this solution. Here are our sources:
 
