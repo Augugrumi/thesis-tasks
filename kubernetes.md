@@ -49,15 +49,31 @@ Namespaces are intend to be used when there are multiple users using the cluster
 
 ### Kubernetes architectural concepts
 
-#### Nodes
+#### Node
+
+A node is the building block for a Kubernetes cluster. Every must have at least the kubelet daemon \(to manage kubernetes functionalities\) and a container manager \(e.g. Docker, VirtualBox\) running. A node runs pods and can communicate with other nodes in the same cluster
+
+![](.gitbook/assets/module_03_nodes.png)
 
 #### Master
 
+The master node is the one that starts a cluster, and that manage the slaves. In the master node only some pods can run in it \(e.g. the dashboard\).
+
+The master generates the token for the slaves to join, and coordinates the federation with other clusters. In a cluster, there is the possibility to have multiple master to assure high availability.
+
 #### Slave
+
+A slave is a node that run the pods that the master schedule. It can also be part of a PersistentVolume storage \(like GlusterFS\) and if it goes down another slave will take care of the pods that where running on it. Slaves can join existing cluster via a given token.
 
 #### Networking
 
+Kubernetes, even if it uses Docker as a matter of fact for running containers, it has its networking structure. In particular, it delegates the network operations \(like packet forwarding\) to different managers, like for example Flannel or Calico.
 
+Every nodes in the cluster runs a pod called `kubeproxy`, that communicates with the `kube-api` pod \(running in the master\) and the `kube-dns` \(for Kubernetes &lt;=1.9.x\) or `CoreDNS` \(for Kubernetes &gt;=1.10.x\). kubeproxy assure transparent communication between pods in the same cluster, and kube-api allows to call Kubernetes services. kube-dns/CoreDNS manage DNS request coming from the pods, differencianting the one that goes outside the cluster from the other that point internally.
+
+Additional information about Flannel, Kubernetes and Docker networking can be found here:
+
+[https://www.sdxcentral.com/cloud/containers/definitions/what-is-coreos-flannel-definition/](https://www.sdxcentral.com/cloud/containers/definitions/what-is-coreos-flannel-definition/)
 
 ## Installing Kubernetes
 
