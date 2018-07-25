@@ -95,7 +95,7 @@ It is important to understand the difference on **Volumes** and **PersistantVolu
 
 **StorageClasses** are a way to describe different type of storage that can be used. Different classes can be used to describe different levels of service or policies. PVCs that don't specify a paticular class can use the default one: to define it you can use annotation `"storageclass.kubernetes.io/is-default-class":"true"`, as for instance:
 
-```text
+```bash
 kubectl patch storageclass glusterfs-storage -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ```
 
@@ -131,21 +131,21 @@ After there is an explanation for the most important part of the scripts. The sc
 First is needed to install all the software needed an for this the script [install\_kubectl\_repo.sh](https://raw.githubusercontent.com/Augugrumi/init-script/centos/kubernetes/install_kubectl_repo.sh) was created. This only call another script and wait until all machine are ready. The other script is [bootstrap.sh](https://raw.githubusercontent.com/Augugrumi/vagrantfiles/oldversion/kubernetes/centos/bootstrap.sh) whose aim is to configure the machine and the install  the necessary software.   
 Boostrap script first **disable SELinux** on all machines \(needed for Kubernetes networking\)
 
-```text
+```bash
 sudo setenforce 0
 sudo sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
 ```
 
 then **enable br\_netfilter** module \(needed for Kubernetes networking\)
 
-```text
+```bash
 sudo modprobe br_netfilter
 sudo sh -c 'echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables'
 ```
 
 **Switch off the swap** by the commands
 
-```text
+```bash
 sudo swapoff -a
 sudo sed -i '/swap/d' /etc/fstab
 ```
@@ -165,7 +165,7 @@ After rebooting all the machine, the installation go on adding in the `/etc/host
 
 After the installation continues in the **master** node, with the [script on\_master.sh](https://raw.githubusercontent.com/Augugrumi/init-script/centos/kubernetes/on_master.sh). We run `kubeadm` by the command
 
-```text
+```bash
 sudo kubeadm init --apiserver-advertise-address=<ip-of-the-master> --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors cri | grep "kubeadm join" > /home/centos/joincommand
 ```
 
@@ -176,7 +176,7 @@ This save in the `joincommand` file the command to be run on slave node to join 
   
 And after give the following commands to create the folder needed by Kubernetes
 
-```text
+```bash
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
@@ -186,14 +186,14 @@ Then wait for all pods that are ready \(`kubectl get pods --all-namespaces`\).
 
 Following, install [Flannel](https://github.com/coreos/flannel) for the networking and wait that it is up.
 
-```text
+```bash
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
 ```
 
 And then it is possible to setup the dashboard to access K8s resources
 
-```text
+```bash
 kubectl create serviceaccount dashboard -n default
   kubectl create clusterrolebinding dashboard-admin -n default \
    --clusterrole=cluster-admin \
