@@ -267,6 +267,10 @@ As in the CentOS installation but the master node \(as we see in logs\) was not 
 
 At the end, as we does not have any strict requisites on the OS to use, we decided to do not proceed down to this road.
 
+## Load balancing
+
+### Ingress
+
 ## Additional Tools
 
 ### Helm
