@@ -4,6 +4,59 @@ description: A heaven for your containers
 
 # Kubernetes
 
+## Kubernetes for dummies
+
+Before starting messing up with Kubernetes you need to know few, but important, concepts about it. Since Kubernetes has a lot of functionalities it could be difficult to get them all at the fist time. Since we're simple Kuberentes user we don't want to race with the official documentation, thus, if you don't understand some concepts, we suggest you to study from here.
+
+In this section you'll find a summary of the basic concepts of Kubernetes that can be useful to read in case you need to refresh your memory.
+
+### Kubernetes basic concepts
+
+#### Pod
+
+A pod the most basic building block for Kubernetes. A pod usually contains one or more container \(if the containers are higly coupled\), but Kubernetes it's able to manage different virtualization technologies \(e.g. [Virtual Machines](https://github.com/kubevirt/kubevirt)\). Pods have a life cycle, where it can assume these states \([stealing the table directly from the official docs](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/)\):
+
+* **Pending**: The Pod has been accepted by the Kubernetes system, but one or more of the Container images has not been created. This includes time before being scheduled as well as time spent downloading images over the network, which could take a while.
+* **Running**: The Pod has been bound to a node, and all of the Containers have been created. At least one Container is still running, or is in the process of starting or restarting.
+* **Succeeded**: All Containers in the Pod have terminated in success, and will not be restarted.
+* **Failed**: All Containers in the Pod have terminated, and at least one Container has terminated in failure. That is, the Container either exited with non-zero status or was terminated by the system.
+* **Unknown**: For some reason the state of the Pod could not be obtained, typically due to an error in communicating with the host of the Pod.
+
+A pod can have different conditions too:
+
+* **PodScheduled**: the Pod has been scheduled to a node;
+* **Ready**: the Pod is able to serve requests and should be added to the load balancing pools of all matching Services;
+* **Initialized**: all [init containers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers) have started successfully;
+* **Unschedulable**: the scheduler cannot schedule the Pod right now, for example due to lacking of resources or other constraints;
+* **Unschedulable**: the scheduler cannot schedule the Pod right now, for example due to lacking of resources or other constraints;
+
+#### Service
+
+Since pods for their nature are highly volatile, applications that use them can not rely on their IP address. To solve this problem, the Service implementation in Kubernetes assure a stable IP, even if different pods in this service crash and gets restarted by a ReplicaSet \(witch will not be explain in this guide, but it basically scale up and down pods - [more info here](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/)\)
+
+Citing the [official documentation](https://kubernetes.io/docs/concepts/services-networking/service/), the Service is:  
+_A Kubernetes `Service` is an abstraction which defines a logical set of `Pods` and a policy by which to access them - sometimes called a micro-service._
+
+#### Volume
+
+When Pods saves data on a node, this data is destinated to perish. Kubernetes offers a way to save this data and to possibly make it available to all the pods replicas, offering a transparent layer where pods are not aware of working with data shared other pods, even located in other nodes. This functionality is called Volume, and there are many different drivers, that range from a simple local storage to glusterfs.
+
+#### Namespace
+
+Namespaces are intend to be used when there are multiple users using the cluster, or to separate multiple projects.
+
+### Kubernetes architectural concepts
+
+#### Nodes
+
+#### Master
+
+#### Slave
+
+#### Networking
+
+
+
 ## Installing Kubernetes
 
 ### Installing Kubernetes on Ubuntu 16.04 \(Xenial Xerus\)
