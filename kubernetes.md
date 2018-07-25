@@ -71,6 +71,8 @@ Kubernetes, even if it uses Docker as a matter of fact for running containers, i
 
 Every nodes in the cluster runs a pod called `kubeproxy`, that communicates with the `kube-api` pod \(running in the master\) and the `kube-dns` \(for Kubernetes &lt;=1.9.x\) or `CoreDNS` \(for Kubernetes &gt;=1.10.x\). kubeproxy assure transparent communication between pods in the same cluster, and kube-api allows to call Kubernetes services. kube-dns/CoreDNS manage DNS request coming from the pods, differencianting the one that goes outside the cluster from the other that point internally.
 
+![And example of how flannel redirect packages between pods](.gitbook/assets/2.png)
+
 Additional information about Flannel, Kubernetes and Docker networking can be found here:
 
 [https://www.sdxcentral.com/cloud/containers/definitions/what-is-coreos-flannel-definition/](https://www.sdxcentral.com/cloud/containers/definitions/what-is-coreos-flannel-definition/)
@@ -309,7 +311,7 @@ At the end, as we does not have any strict requisites on the OS to use, we decid
 
 ### Helm
 
-To install Helm you need to be in the master node. Now install Helm according to the [official documentation](https://docs.helm.sh/using_helm/#installing-helm) \(and yes, we want to live to the edge piping script downloaded from internet to bash\):
+To install Helm you need to be in the master node. Now install Helm according to the [official documentation](https://docs.helm.sh/using_helm/#installing-helm) \(and yes, we want to live to the edge piping scripts straight into bash\):
 
 ```bash
 curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
