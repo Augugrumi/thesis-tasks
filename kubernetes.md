@@ -488,6 +488,8 @@ In the dashboard, you should see now something similar to this:
 
 ![](.gitbook/assets/immagine.png)
 
+To achieve this we followed this sources:
+
 {% embed data="{\"url\":\"https://github.com/nginxinc/kubernetes-ingress/blob/master/docs/installation.md\",\"type\":\"link\",\"title\":\"nginxinc/kubernetes-ingress\",\"description\":\"kubernetes-ingress - NGINX and  NGINX Plus Ingress Controllers for Kubernetes\",\"icon\":{\"type\":\"icon\",\"url\":\"https://github.com/fluidicon.png\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://avatars0.githubusercontent.com/u/8629072?s=400&v=4\",\"width\":110,\"height\":110,\"aspectRatio\":1}}" %}
 
 {% embed data="{\"url\":\"https://github.com/nginxinc/kubernetes-ingress/blob/master/docs/nginx-ingress-controllers.md\",\"type\":\"link\",\"title\":\"nginxinc/kubernetes-ingress\",\"description\":\"kubernetes-ingress - NGINX and  NGINX Plus Ingress Controllers for Kubernetes\",\"icon\":{\"type\":\"icon\",\"url\":\"https://github.com/fluidicon.png\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://avatars0.githubusercontent.com/u/8629072?s=400&v=4\",\"width\":110,\"height\":110,\"aspectRatio\":1}}" %}
