@@ -425,9 +425,23 @@ At the end, as we does not have any strict requisites on the OS to use, we decid
 {% endtab %}
 {% endtabs %}
 
-## Load balancing
+## Ingress
 
-### Ingress
+{% embed data="{\"url\":\"https://blog.getambassador.io/kubernetes-ingress-nodeport-load-balancers-and-ingress-controllers-6e29f1c44f2d\",\"type\":\"link\",\"title\":\"Kubernetes Ingress 101: NodePort, Load Balancers, and Ingress Controllers\",\"description\":\"This article will introduce the three general strategies in Kubernetes for ingress, and the tradeoffs with each approach.\",\"icon\":{\"type\":\"icon\",\"url\":\"https://cdn-images-1.medium.com/fit/c/304/304/1\*5K3tnV4TXOeYzWWtI6giwQ.png\",\"width\":152,\"height\":152,\"aspectRatio\":1},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://cdn-images-1.medium.com/max/2000/1\*N13z5Vqm2XMvvaHzhwIfpw.jpeg\",\"width\":2000,\"height\":1333,\"aspectRatio\":0.6665}}" %}
+
+### Nginx
+
+{% embed data="{\"url\":\"https://github.com/nginxinc/kubernetes-ingress/blob/master/docs/installation.md\",\"type\":\"link\",\"title\":\"nginxinc/kubernetes-ingress\",\"description\":\"kubernetes-ingress - NGINX and  NGINX Plus Ingress Controllers for Kubernetes\",\"icon\":{\"type\":\"icon\",\"url\":\"https://github.com/fluidicon.png\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://avatars0.githubusercontent.com/u/8629072?s=400&v=4\",\"width\":110,\"height\":110,\"aspectRatio\":1}}" %}
+
+{% embed data="{\"url\":\"https://github.com/nginxinc/kubernetes-ingress/blob/master/docs/nginx-ingress-controllers.md\",\"type\":\"link\",\"title\":\"nginxinc/kubernetes-ingress\",\"description\":\"kubernetes-ingress - NGINX and  NGINX Plus Ingress Controllers for Kubernetes\",\"icon\":{\"type\":\"icon\",\"url\":\"https://github.com/fluidicon.png\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://avatars0.githubusercontent.com/u/8629072?s=400&v=4\",\"width\":110,\"height\":110,\"aspectRatio\":1}}" %}
+
+### Ambassador
+
+{% embed data="{\"url\":\"https://www.getambassador.io/user-guide/getting-started\",\"type\":\"link\",\"title\":\"Deploying to Kubernetes · Ambassador: open source API Gateway for microservices and Kubernetes\",\"icon\":{\"type\":\"icon\",\"url\":\"https://www.getambassador.io/gitbook/images/apple-touch-icon-precomposed-152.png\",\"width\":152,\"height\":152,\"aspectRatio\":1}}" %}
+
+### Traefic
+
+{% embed data="{\"url\":\"https://docs.traefik.io/configuration/backends/kubernetes/\",\"type\":\"link\",\"title\":\"Kubernetes Ingress - Træfik\",\"description\":\"Træfik Documentation\",\"icon\":{\"type\":\"icon\",\"url\":\"https://docs.traefik.io/img/traefik.icon.png\",\"aspectRatio\":0}}" %}
 
 ## Additional Tools
 
