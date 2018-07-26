@@ -427,9 +427,66 @@ At the end, as we does not have any strict requisites on the OS to use, we decid
 
 ## Ingress
 
+Ingress is a great way to make your service available outside your cluster. There are different ways Kubernetes handle service reachability, and these are:
+
+* ClusterIP: Exposes the service on a cluster-internal IP. Choosing this value makes the service only reachable from within the cluster. This is the default ServiceType.
+* [NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport): Exposes the service on each Node’s IP at a static port \(the NodePort\). A ClusterIP service, to which the NodePort service will route, is automatically created. You’ll be able to contact the NodePort service, from outside the cluster, by requesting `<NodeIP>:<NodePort>`.
+* [LoadBalancer](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer): Exposes the service externally using a cloud provider’s load balancer. NodePort and ClusterIP services, to which the external load balancer will route, are automatically created.
+* [ExternalName](https://kubernetes.io/docs/concepts/services-networking/service/#externalname): Maps the service to the contents of the externalName field \(e.g. foo.bar.example.com\), by returning a CNAME record with its value. No proxying of any kind is set up. This requires version 1.7 or higher of kube-dns.
+
+Since for LoadBalancer we would need a Cloud service like AWS or GCE, we opted for NodePort. We're aware that it's not a good solution to use in a production environment since it opens a couple of port for every pods that runs in a node, but since we're building a test environment, this was the most suitable solution for our cluster.
+
+After this decision we have to take another one: what kind of ingress-controller do we want to use? That's a tricky question, since every controller seems to work well, but they have different semantic for configuring the reverse proxies, so we need to choose carefully. In this case, we've tried three of them before taking any decision.
+
 {% embed data="{\"url\":\"https://blog.getambassador.io/kubernetes-ingress-nodeport-load-balancers-and-ingress-controllers-6e29f1c44f2d\",\"type\":\"link\",\"title\":\"Kubernetes Ingress 101: NodePort, Load Balancers, and Ingress Controllers\",\"description\":\"This article will introduce the three general strategies in Kubernetes for ingress, and the tradeoffs with each approach.\",\"icon\":{\"type\":\"icon\",\"url\":\"https://cdn-images-1.medium.com/fit/c/304/304/1\*5K3tnV4TXOeYzWWtI6giwQ.png\",\"width\":152,\"height\":152,\"aspectRatio\":1},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://cdn-images-1.medium.com/max/2000/1\*N13z5Vqm2XMvvaHzhwIfpw.jpeg\",\"width\":2000,\"height\":1333,\"aspectRatio\":0.6665}}" %}
 
+{% embed data="{\"url\":\"https://kubernetes.io/docs/concepts/services-networking/service/\",\"type\":\"link\",\"title\":\"Services\",\"description\":\"Production-Grade Container Orchestration\",\"icon\":{\"type\":\"icon\",\"url\":\"https://kubernetes.io/images/favicon.png\",\"aspectRatio\":0}}" %}
+
 ### Nginx
+
+Kubernetes [supports it's own version of Nginx](https://github.com/kubernetes/ingress-nginx), but there is also an [ingress-controller based supported by the official Nginx team](https://github.com/nginxinc/kubernetes-ingress). We've chosen the second one, since it seems more stable.
+
+#### Installation
+
+The installation is pretty simple, and can be done with Helm. Open a terminal in you master node and type:
+
+```bash
+git clone https://github.com/nginxinc/kubernetes-ingress.git --depth 1 # Clone the project repository
+kubernetes-ingress/helm-chart
+helm install --name nginxcontroller . --set controller.replicaCount=2,controller.service.type=NodePort,controller.service.externalTrafficPolicy=Cluster # Install the helm package
+```
+
+At this point, if you want to expose a service you need to create a file similar to this one:
+
+{% code-tabs %}
+{% code-tabs-item title="ingress-forwarding.yaml" %}
+```yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+ name: wordpress-ingress
+spec:
+ rules:
+ - host: wordpress.example.com
+   http:
+     paths:
+     - path: /<your-url-path>
+       backend:
+         serviceName: <your-service-name>
+         servicePort: 80
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+To apply your forwarding to kubernetes, open a terminal and digit:
+
+```text
+kubectl create -f ingress-forwarding.yaml
+```
+
+In the dashboard, you should see now something similar to this:
+
+![](.gitbook/assets/immagine.png)
 
 {% embed data="{\"url\":\"https://github.com/nginxinc/kubernetes-ingress/blob/master/docs/installation.md\",\"type\":\"link\",\"title\":\"nginxinc/kubernetes-ingress\",\"description\":\"kubernetes-ingress - NGINX and  NGINX Plus Ingress Controllers for Kubernetes\",\"icon\":{\"type\":\"icon\",\"url\":\"https://github.com/fluidicon.png\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://avatars0.githubusercontent.com/u/8629072?s=400&v=4\",\"width\":110,\"height\":110,\"aspectRatio\":1}}" %}
 
