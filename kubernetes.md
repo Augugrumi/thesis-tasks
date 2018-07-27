@@ -496,9 +496,11 @@ To achieve this we followed this sources:
 
 ### Ambassador
 
+We choose to not use this controller
+
 {% embed data="{\"url\":\"https://www.getambassador.io/user-guide/getting-started\",\"type\":\"link\",\"title\":\"Deploying to Kubernetes · Ambassador: open source API Gateway for microservices and Kubernetes\",\"icon\":{\"type\":\"icon\",\"url\":\"https://www.getambassador.io/gitbook/images/apple-touch-icon-precomposed-152.png\",\"width\":152,\"height\":152,\"aspectRatio\":1}}" %}
 
-### Traefic
+### Traefik
 
 {% embed data="{\"url\":\"https://docs.traefik.io/configuration/backends/kubernetes/\",\"type\":\"link\",\"title\":\"Kubernetes Ingress - Træfik\",\"description\":\"Træfik Documentation\",\"icon\":{\"type\":\"icon\",\"url\":\"https://docs.traefik.io/img/traefik.icon.png\",\"aspectRatio\":0}}" %}
 
