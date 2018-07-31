@@ -500,7 +500,135 @@ We choose to not use this controller
 
 {% embed data="{\"url\":\"https://www.getambassador.io/user-guide/getting-started\",\"type\":\"link\",\"title\":\"Deploying to Kubernetes · Ambassador: open source API Gateway for microservices and Kubernetes\",\"icon\":{\"type\":\"icon\",\"url\":\"https://www.getambassador.io/gitbook/images/apple-touch-icon-precomposed-152.png\",\"width\":152,\"height\":152,\"aspectRatio\":1}}" %}
 
-### Traefik
+### Træfik
+
+#### Installation
+
+Since Kubernetes 1.6 Role based access control was introduces so in order to make Træfik properly it must be configured. For simplicity, ClusterRoleBinding can be used as in the [Træfik installation guide](https://docs.traefik.io/user-guide/kubernetes/):
+
+{% code-tabs %}
+{% code-tabs-item title="traefik-rbac.yaml" %}
+```yaml
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: traefik-ingress-controller
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - services
+      - endpoints
+      - secrets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - extensions
+    resources:
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: traefik-ingress-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: traefik-ingress-controller
+subjects:
+- kind: ServiceAccount
+  name: traefik-ingress-controller
+  namespace: kube-system
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+Save that in a file `traefik-rbac.yaml` and run 
+
+```bash
+kubectl apply -f traefik-rbac.yaml
+```
+
+After the ingress controller can be set up in to 2 way: using a deployment or a daemon set. We chose the first option for easier management deploying it with this YAML:
+
+{% code-tabs %}
+{% code-tabs-item title="traefik-deployment.yaml" %}
+```yaml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: traefik-ingress-controller
+  namespace: kube-system
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: traefik-ingress-controller
+  namespace: kube-system
+  labels:
+    k8s-app: traefik-ingress-lb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: traefik-ingress-lb
+  template:
+    metadata:
+      labels:
+        k8s-app: traefik-ingress-lb
+        name: traefik-ingress-lb
+    spec:
+      serviceAccountName: traefik-ingress-controller
+      terminationGracePeriodSeconds: 60
+      containers:
+      - image: traefik
+        name: traefik-ingress-lb
+        ports:
+        - name: http
+          containerPort: 80
+        - name: admin
+          containerPort: 8080
+        args:
+        - --api
+        - --kubernetes
+        - --logLevel=INFO
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: traefik-ingress-service
+  namespace: kube-system
+spec:
+  selector:
+    k8s-app: traefik-ingress-lb
+  ports:
+    - protocol: TCP
+      port: 80
+      name: web
+    - protocol: TCP
+      port: 8080
+      name: admin
+  type: NodePort
+
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+As before save it in a file, say `traefik-deployment.yaml` and run
+
+```bash
+kubectl apply -f traefik-deployment.yaml
+```
+
+This deployment will expose two NodePorts which allow access both to the ingress and to the web management interface.
 
 {% embed data="{\"url\":\"https://docs.traefik.io/configuration/backends/kubernetes/\",\"type\":\"link\",\"title\":\"Kubernetes Ingress - Træfik\",\"description\":\"Træfik Documentation\",\"icon\":{\"type\":\"icon\",\"url\":\"https://docs.traefik.io/img/traefik.icon.png\",\"aspectRatio\":0}}" %}
 
