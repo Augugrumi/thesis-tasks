@@ -7,5 +7,4 @@
 * [Kubernetes](kubernetes.md)
 * [VNF](vnf.md)
 * [Useful links](useful-links.md)
-* [Untitled](untitled.md)
 
