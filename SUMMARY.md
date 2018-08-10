@@ -5,5 +5,6 @@
 * [Openstack](openstack.md)
 * [Openbaton](openbaton.md)
 * [Kubernetes](kubernetes.md)
+* [VNF](vnf.md)
 * [Useful links](useful-links.md)
 
