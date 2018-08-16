@@ -60,5 +60,9 @@ There are 2 approaches to deploy the chain on Kubernetes. Using a single pod or 
 
 #### Kubernetes - Single pod deployment
 
+An example of a single pod deployment can be found [there](https://github.com/Augugrumi/yaml-vnfs/tree/master/k8s/json-chain/unique-pod). In that YAML are defined a service that is exposed to make the enchainer reachable, a container for the enchainer and a container for each VNF. Generally speacking it is possible to deploy chains in that way using a single service to expose the anchainer and creating the chain of VNFs  as a multi-container pod.
+
 #### Kubernetes - Multiple pods deployment
+
+An example of a multi-pod deployment can be found [there](https://github.com/Augugrumi/yaml-vnfs/tree/master/k8s/json-chain/different-pods). 
 
