@@ -6,5 +6,6 @@
 * [Openbaton](openbaton.md)
 * [Kubernetes](kubernetes.md)
 * [VNF](vnf.md)
+* [VFC](vfc.md)
 * [Useful links](useful-links.md)
 
