@@ -7,5 +7,7 @@
 * [Kubernetes](kubernetes.md)
 * [VNF](vnf.md)
 * [VFC](vfc.md)
+* [Connection with the chain](astaire.md)
+* [Astaire](astaire-1.md)
 * [Useful links](useful-links.md)
 

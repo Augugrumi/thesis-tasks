@@ -698,3 +698,9 @@ We developed a [script](https://raw.githubusercontent.com/Augugrumi/init-script/
 bash <(curl -s https://raw.githubusercontent.com/Augugrumi/init-script/centos/helm/installer.sh)
 ```
 
+## Additional links an further references
+
+### Networking
+
+{% embed data="{\"url\":\"https://medium.com/google-cloud/understanding-kubernetes-networking-pods-7117dd28727\",\"type\":\"link\",\"title\":\"Understanding kubernetes networking: pods\",\"description\":\"This post is going to attempt to demystify the several layers of networking operating in a kubernetes cluster. Kubernetes is a powerful…\",\"icon\":{\"type\":\"icon\",\"url\":\"https://cdn-images-1.medium.com/fit/c/304/304/1\*FUjLiCANvATKeaJEeg20Rw.png\",\"width\":152,\"height\":152,\"aspectRatio\":1},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://cdn-images-1.medium.com/max/2000/1\*5DymPHFgLmQ3WoEbbyM52Q.png\",\"width\":1600,\"height\":700,\"aspectRatio\":0.4375}}" %}
+
