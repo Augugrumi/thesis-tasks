@@ -38,9 +38,7 @@ In order to accomplish that, we create [TunConnector](https://github.com/Augugru
 
 TunConnector requires to specify the port on the host used to create the TUN tunnel and the IP that will be used in it to reach the machine.
 
-#### Ho
-
-#### w it works
+#### How it works
 
 TunConnector can work as a client, server or both modality \(for a certain link the host will be a client, for another the server\). The first operation that it performs in each configuration is to create a TUN device using an [OpenVPN](https://openvpn.net/) utility:
 
@@ -95,11 +93,21 @@ Once the tunnel is up, you can check that the connection is working for example 
 
 #### Problems of this approach
 
-At the end of the day we've choose to not use this approach, because the use of point-to-point connections made our entire structure stiff: our final goal is to have VNF chains that can dynamically adapt and change. Making point-to-point connections means this it's not possible, because every time a packet has to go to a new VNF first a new connection \(tunnel\) has to be established and next the packet has to be sent. This, multiplied for a great number of packets makes the whole system unsustainable. Finally, scalability has to be taken in consideration too: when creating a point-to-point connection between two pods these jeopardize a fair load distribution between replicas, since the tunnel is created only with one instance, and not all of them. Thus, to make the system really scalable, every connection should be service-to-service, and not point-to-point, making the total number of the connections between two VNF services equal to N \* M, where N is the number of pods for one VNF service and M is for the other one.
+At the end of the day we've choose to not use this approach, because the use of point-to-point connections made our entire structure stiff: our final goal is to have VNF chains that can dynamically adapt and change. Making point-to-point connections means this it's not possible, because every time a packet has to go to a new VNF first a new connection \(tunnel\) has to be established and next the packet has to be sent. This, multiplied for a great number of packets makes the whole system unsustainable. Finally, scalability has to be taken in consideration too: when creating a point-to-point connection between two pods these jeopardize a fair load distribution between replicas, since the tunnel is created only with one instance, and not all of them. Thus, to make the system really scalable, every connection should be service-to-service, and not point-to-point, making the total number of the connections between two VNF services equal to `N * M`, where `N` is the number of pods for one VNF service and `M` is for the other one.
 
 This is why we opted for a proxy-oriented solution.
 
-## Proxy connection
+## Proxy-oriented connection
+
+As already said at the beginning of this article, a proxy connection makes the NFVI acting like a man-in-the-middle, where packages are first elaborated and secondly a proxy sends them to the receiver, managing all details regarding the connection. The packets follows this flow:
+
+1. The client machine, with a local proxy installed, sends the packet to the receiver. The packet goes through the proxy and gets sent to the NFVI, where another proxy \(called Ingress\) listen.
+2. The Ingress proxy receives the packet, stores the packet header in a specific back-end \(Roulette\) and performs packet classification, eventually choosing the VNF chain where the packet will be elaborated. Finally, the packet gets send to the right chain
+3. For every VNF, the packet comes and gets elaborated. To determine the next hop, a request is made to Roulette, with replies with the name of the next VNF where the packet has to be forwarded. The last VNF forwards the packet to the proxy that communicates with the receiver, called Egress
+4. The Egress receives the packet wrapped inside a UDP one, communicates with Roulette additional information about who received it \(with the aim to maintain the session between the sender and the receiver when other packages\) and sends the packet to the receiver.
+5. If the receiver replies, the reply follows a symmetrical pattern, where now the Egress becomes the Ingress of the connection.
+
+This flow, while it seems complicated at first, it allows to maintain the state of the connection in TCP communications, where the session is fundamental.
 
 
 
