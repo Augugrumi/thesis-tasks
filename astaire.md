@@ -2,24 +2,21 @@
 description: New chaining functionality
 ---
 
-# Connection with the chain
+# How to communicate with the NFVI
 
-After initial proposals, we refined our implementation adding 2 improvement:
-
-* We implemented the connection of sender and receiver of the packet with the chain with a TUN tunnel
-* We implement send and receive on the core of the VNF using UDP instead of TCP
+Communications with the NFVI are not trivial: there are different problematics that range from the initial connection to the way packets have to be transmitted. Here, during our thesis development, we come up with two approaches at these problems: using a tunnel \(TUN/TAP section\) to automatically encapsulating the data \(at the cost of losing the NFVI transparency\) or using a proxy to make the NFVI like a man-in-the-middle, handling the extremes of the communications with the sender and the receiver.
 
 ## TUN/TAP
 
 TUN and TAP are virtual kernel interfaces. These differs from the normal network interfaces because they are completely software and no physical components are required. 
 
-TUN \(network TUNnel\) operates with layer-3 packets \(as IP packets\), TAP instead \(network tap\) works on layer 2, with Ethernet packets. When used with user-space programs TUN/TAP devices injects packets to the operating-systems network stack: this emulate the reception from an external source. 
+TUN \(network TUNnel\) operates with layer-3 packets \(as IP packets\), TAP instead \(network tap\) works on layer 2, with Ethernet packets. When used with user-space programs TUN/TAP devices injects packets to the operating-system network stack: this emulates incoming data from an external source. 
 
-In order to manage the communication on a tun/tap interface a program gets a file descriptor to which read and write data in order to receive or send them. To the kernel, it would look like to receive packets "from the wire".
+In order to manage the communications on a tun/tap interface the program gets a file descriptor where its able to perform I/O operations. From the kernel point of view these packets are behave the same as incoming packets from an external source.
 
 These interfaces can be both **transient** and **persistent**. Transient means that the interface is created, used and destroyed by the same program, persistent means that are used some utility to create them and then programs can attach to it.
 
-Once create the interfaces can be used as the usual "hardware" network interfaces. 
+Once created the interfaces can be used as normal "hardware" network interfaces. 
 
 TUN e TAP interfaces are used for VPNs, virtual machine networking, to connect physical machines to network emulators and NATs. 
 
@@ -27,21 +24,23 @@ TUN e TAP interfaces are used for VPNs, virtual machine networking, to connect p
 
 ### Network tunnel
 
-Network tunneling protocol is a communication protocol that make possible exchange of data in secure ways across public networks and to run a protocol that is not supported by a certain network thanks to the encapsulation. Basically, the tunneling protocol works by using the payload of a packet to carry the packets that actually provide the service. 
+Network tunneling protocol is a communication protocol that makes possible exchange of data in secure ways across public networks and to run a protocol that is not supported by a certain network thanks to the encapsulation. Basically, the tunneling protocol works wrapping the original packet inside the payload of a new one.
 
 ### Network TAP
 
-Network Terminal Access Point is a external monitoring device that mirrors the traffic that pass through two nodes, instead a TAP is the device in the network that actually monitor the traffic. 
+Network Terminal Access Point is a external monitoring device that mirrors the traffic that pass through two nodes, instead TAP is the device in the network that actually monitor the traffic. 
 
-## TunConnector
+### TunConnector
 
-The first change we performed is to create a TUN tunnel between VNFs. This allow us to better manipulate packages: encapsulating the message send from the sender we can exchange a Layer-3 packet among the VNFs as payload of a UDP packet. In that way we can maintain most of the original information, so we can send the packet to the right destination.
+The first change we performed was to create a TUN tunnel between VNFs. This allowed us to manipulate packages in better way encapsulating the original message sent from the sender as the payload of a UDP packet, and exchanging it among the VNFs. In that way we were able to maintain most of the original information, and to send the packet to the right destination.
 
 In order to accomplish that, we create [TunConnector](https://github.com/Augugrumi/TunConnector): this is a naive implementation of a software that create a virtual tun interface on the host machine and than allows the connection to another machine or waits for connection. This software was developed following this [tutorial](https://backreference.org/2010/03/26/tuntap-interface-tutorial/) and starting from [simpletun](https://github.com/gregnietsky/simpletun) code.
 
 TunConnector requires to specify the port on the host used to create the TUN tunnel and the IP that will be used in it to reach the machine.
 
-### How it works
+#### Ho
+
+#### w it works
 
 TunConnector can work as a client, server or both modality \(for a certain link the host will be a client, for another the server\). The first operation that it performs in each configuration is to create a TUN device using an [OpenVPN](https://openvpn.net/) utility:
 
@@ -57,7 +56,7 @@ After both in client and in server mode it allocates 2 socket, retrieving the co
 
 Once a server receive a request of connection from a certain client, the tunnel will be created. This tunnel consist of a infinite loop in which data for the tunnel are redirected to the right file descriptor from the network and vice versa.
 
-### Example
+#### Example
 
 Usage:
 
@@ -88,9 +87,19 @@ with the following options
 {% endtab %}
 {% endtabs %}
 
-In the example above we suppose to create a server on a host with IP 192.168.6.9 \(the IP is required from the client\), that accept requests on port 55555. The interface will be named tun0 and inside the tunnel the machine will have the address 10.0.0.2.
+In the example above we suppose to create a server on a host with IP `192.168.6.9` \(the IP is required from the client\), that accept requests on port `55555`. The interface will be named tun0 and inside the tunnel the machine will have the address `10.0.0.2`.
 
 In an another machine the client run in a mirrored way the program, specifying the server port and IP address.
 
 Once the tunnel is up, you can check that the connection is working for example pinging the two ends of the tunnel with the IP address used inside the tunnel.  
+
+#### Problems of this approach
+
+At the end of the day we've choose to not use this approach, because the use of point-to-point connections made our entire structure stiff: our final goal is to have VNF chains that can dynamically adapt and change. Making point-to-point connections means this it's not possible, because every time a packet has to go to a new VNF first a new connection \(tunnel\) has to be established and next the packet has to be sent. This, multiplied for a great number of packets makes the whole system unsustainable. Finally, scalability has to be taken in consideration too: when creating a point-to-point connection between two pods these jeopardize a fair load distribution between replicas, since the tunnel is created only with one instance, and not all of them. Thus, to make the system really scalable, every connection should be service-to-service, and not point-to-point, making the total number of the connections between two VNF services equal to N \* M, where N is the number of pods for one VNF service and M is for the other one.
+
+This is why we opted for a proxy-oriented solution.
+
+## Proxy connection
+
+
 
