@@ -12,6 +12,8 @@ We're aware that in this kind of environment automation is fundamental, and gene
 
 Harbor, written in Java using the Spark framework, at the time of writing has the following API configuration.
 
+At the end of the day, Harbor ended substituting the Openbaton role: indeed it already covers what Openbaton does, so we see an opportunity to drop the latter and to stick with a component created from us that perfectly fits our needs.
+
 ### API definition
 
 {% api-method method="get" host="" path="/vnf/launch/:id" %}
