@@ -345,9 +345,9 @@ Where in `authUrl` you have to insert your openstack keystone API IP \(if you fo
 
 Additional documentation \(since we haven't invented the wheel\) can be found at the following links:
 
-{% embed data="{\"url\":\"https://openbaton.github.io/documentation/pop-registration/\",\"type\":\"link\",\"title\":\"OpenBaton Documentation\",\"icon\":{\"type\":\"icon\",\"url\":\"https://openbaton.github.io/documentation/pop-registration/favicon.ico\",\"aspectRatio\":0}}" %}
+{% embed url="https://openbaton.github.io/documentation/pop-registration/" %}
 
-{% embed data="{\"url\":\"https://openbaton.github.io/documentation/pop-openstack/\",\"type\":\"link\",\"title\":\"OpenBaton Documentation\",\"icon\":{\"type\":\"icon\",\"url\":\"https://openbaton.github.io/documentation/pop-openstack/favicon.ico\",\"aspectRatio\":0}}" %}
+{% embed url="https://openbaton.github.io/documentation/pop-openstack/" %}
 
 ## Useful resources
 

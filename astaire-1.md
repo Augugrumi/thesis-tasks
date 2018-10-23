@@ -1,5 +1,5 @@
 ---
-description: How VNFs speack each other
+description: How VNFs speak each other
 ---
 
 # Astaire

@@ -214,9 +214,9 @@ The last thing to do is to make other node join the cluster, using the `joincomm
 
 We haven't made up nothing, but we've googled a lot before coming to this solution. Here are our sources:
 
-{% embed data="{\"url\":\"https://www.howtoforge.com/tutorial/centos-kubernetes-docker-cluster/\",\"type\":\"link\",\"title\":\"How to Install a Kubernetes Docker Cluster on CentOS 7\",\"description\":\"In this tutorial, I will show you step-by-step how to install and configure Kubernetes and Docker on CentOS 7. Kubernetes is an open source platform f...\",\"icon\":{\"type\":\"icon\",\"url\":\"https://www.howtoforge.com/favicon.ico\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://www.howtoforge.com/images/teaser/centos.gif\",\"width\":42,\"height\":40,\"aspectRatio\":0.9523809523809523}}" %}
+{% embed url="https://www.howtoforge.com/tutorial/centos-kubernetes-docker-cluster/" %}
 
-{% embed data="{\"url\":\"https://github.com/kubernetes/kubernetes/issues/60869\",\"type\":\"link\",\"title\":\"kube-proxy can\'t load xz compressed kernel ip\_vs module · Issue \#60869 · kubernetes/kubernetes\",\"description\":\"Is this a BUG REPORT or FEATURE REQUEST?: /kind bug What happened: kube-proxy failed to load ip\_vs.ko.xz module What you expected to happen: compressed kernel module ip\_vs could loaded by kube-prox...\",\"icon\":{\"type\":\"icon\",\"url\":\"https://github.com/fluidicon.png\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://avatars1.githubusercontent.com/u/714445?s=400&v=4\",\"width\":400,\"height\":400,\"aspectRatio\":1}}" %}
+{% embed url="https://github.com/kubernetes/kubernetes/issues/60869" %}
 {% endtab %}
 
 {% tab title="Ubuntu" %}
@@ -387,23 +387,23 @@ Ta-daan! 🎉 Now we're ready to deploy our Gluster cluster. From the master, ty
 At the end, if everything goes correctly, you should see a `StorageClass` template. Copy it deploy to your Kubernetes through `kubectl`.
 
 ```bash
-kubectl create -f glusterstorageclass.yaml
+kubectl create -f storageclass.yaml
 ```
 
 Optionally, you can set it as default `StorageClass` with the following command:
 
 ```bash
-kubectl patch -f glusterstorageclass.yaml \
+kubectl patch -f storageclass.yaml \
 -p'{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ```
 
 Here you can additional sources:
 
-{% embed data="{\"url\":\"https://askubuntu.com/questions/299676/how-to-install-3rd-party-module-so-that-it-is-loaded-on-boot\",\"type\":\"link\",\"title\":\"How to install 3rd party module so that it is loaded on boot?\",\"description\":\"I have a third party module to go with a frame grabber.  I\'ve downloaded the kernel source, followed the vendor\'s instructions to compile it, and have the resulting module, arvdrv.ko, sitting in a ...\",\"icon\":{\"type\":\"icon\",\"url\":\"https://cdn.sstatic.net/Sites/askubuntu/img/apple-touch-icon.png?v=e16e1315edd6\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://cdn.sstatic.net/Sites/askubuntu/img/apple-touch-icon@2.png?v=c492c9229955\",\"width\":316,\"height\":316,\"aspectRatio\":1}}" %}
+{% embed url="https://askubuntu.com/questions/299676/how-to-install-3rd-party-module-so-that-it-is-loaded-on-boot" %}
 
-{% embed data="{\"url\":\"https://www.youtube.com/watch?v=uaNZx2O9ihc\",\"type\":\"video\",\"title\":\"Provision Gluster Storage with REST API using Heketi\",\"description\":\"https://github.com/heketi/heketi\",\"icon\":{\"type\":\"icon\",\"url\":\"https://www.youtube.com/yts/img/favicon\_144-vfliLAfaB.png\",\"width\":144,\"height\":144,\"aspectRatio\":1},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://i.ytimg.com/vi/uaNZx2O9ihc/maxresdefault.jpg\",\"width\":1280,\"height\":720,\"aspectRatio\":0.5625},\"embed\":{\"type\":\"player\",\"url\":\"https://www.youtube.com/embed/uaNZx2O9ihc?rel=0&showinfo=0\",\"html\":\"<div style=\\\"left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.2493%;\\\"><iframe src=\\\"https://www.youtube.com/embed/uaNZx2O9ihc?rel=0&amp;showinfo=0\\\" style=\\\"border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;\\\" allowfullscreen scrolling=\\\"no\\\"></iframe></div>\",\"aspectRatio\":1.7778}}" %}
+{% embed url="https://www.youtube.com/watch?v=uaNZx2O9ihc" %}
 
-{% embed data="{\"url\":\"https://blog.lwolf.org/post/how-i-deployed-glusterfs-cluster-to-kubernetes/\",\"type\":\"link\",\"title\":\"Two days of pain or how I deployed GlusterFS cluster to Kubernetes\",\"description\":\"I spent last two days installing GlusterFS storage on top of my Kubernetes. It took much more time and effort than it should. I faced all kinds of problems, some if which were not obvious and took a lot of googling. So I decided to write this post. Hopefully it will save some time for somebody. I was playing with helm. Trying to assemble a complex application with several dependencies from official chart repository.\"}" %}
+{% embed url="https://blog.lwolf.org/post/how-i-deployed-glusterfs-cluster-to-kubernetes/" %}
 {% endtab %}
 
 {% tab title="Ubuntu" %}
@@ -438,9 +438,9 @@ Since for LoadBalancer we would need a Cloud service like AWS or GCE, we opted f
 
 After this decision we have to take another one: what kind of ingress-controller do we want to use? That's a tricky question, since every controller seems to work well, but they have different semantic for configuring the reverse proxies, so we need to choose carefully. In this case, we've tried three of them before taking any decision.
 
-{% embed data="{\"url\":\"https://blog.getambassador.io/kubernetes-ingress-nodeport-load-balancers-and-ingress-controllers-6e29f1c44f2d\",\"type\":\"link\",\"title\":\"Kubernetes Ingress 101: NodePort, Load Balancers, and Ingress Controllers\",\"description\":\"This article will introduce the three general strategies in Kubernetes for ingress, and the tradeoffs with each approach.\",\"icon\":{\"type\":\"icon\",\"url\":\"https://cdn-images-1.medium.com/fit/c/304/304/1\*5K3tnV4TXOeYzWWtI6giwQ.png\",\"width\":152,\"height\":152,\"aspectRatio\":1},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://cdn-images-1.medium.com/max/2000/1\*N13z5Vqm2XMvvaHzhwIfpw.jpeg\",\"width\":2000,\"height\":1333,\"aspectRatio\":0.6665}}" %}
+{% embed url="https://blog.getambassador.io/kubernetes-ingress-nodeport-load-balancers-and-ingress-controllers-6e29f1c44f2d" %}
 
-{% embed data="{\"url\":\"https://kubernetes.io/docs/concepts/services-networking/service/\",\"type\":\"link\",\"title\":\"Services\",\"description\":\"Production-Grade Container Orchestration\",\"icon\":{\"type\":\"icon\",\"url\":\"https://kubernetes.io/images/favicon.png\",\"aspectRatio\":0}}" %}
+{% embed url="https://kubernetes.io/docs/concepts/services-networking/service/" %}
 
 ### Nginx
 
@@ -490,15 +490,15 @@ In the dashboard, you should see now something similar to this:
 
 To achieve this we followed this sources:
 
-{% embed data="{\"url\":\"https://github.com/nginxinc/kubernetes-ingress/blob/master/docs/installation.md\",\"type\":\"link\",\"title\":\"nginxinc/kubernetes-ingress\",\"description\":\"kubernetes-ingress - NGINX and  NGINX Plus Ingress Controllers for Kubernetes\",\"icon\":{\"type\":\"icon\",\"url\":\"https://github.com/fluidicon.png\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://avatars0.githubusercontent.com/u/8629072?s=400&v=4\",\"width\":110,\"height\":110,\"aspectRatio\":1}}" %}
+{% embed url="https://github.com/nginxinc/kubernetes-ingress/blob/master/docs/installation.md" %}
 
-{% embed data="{\"url\":\"https://github.com/nginxinc/kubernetes-ingress/blob/master/docs/nginx-ingress-controllers.md\",\"type\":\"link\",\"title\":\"nginxinc/kubernetes-ingress\",\"description\":\"kubernetes-ingress - NGINX and  NGINX Plus Ingress Controllers for Kubernetes\",\"icon\":{\"type\":\"icon\",\"url\":\"https://github.com/fluidicon.png\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://avatars0.githubusercontent.com/u/8629072?s=400&v=4\",\"width\":110,\"height\":110,\"aspectRatio\":1}}" %}
+{% embed url="https://github.com/nginxinc/kubernetes-ingress/blob/master/docs/nginx-ingress-controllers.md" %}
 
 ### Ambassador
 
 We choose to not use this controller
 
-{% embed data="{\"url\":\"https://www.getambassador.io/user-guide/getting-started\",\"type\":\"link\",\"title\":\"Deploying to Kubernetes · Ambassador: open source API Gateway for microservices and Kubernetes\",\"icon\":{\"type\":\"icon\",\"url\":\"https://www.getambassador.io/gitbook/images/apple-touch-icon-precomposed-152.png\",\"width\":152,\"height\":152,\"aspectRatio\":1}}" %}
+{% embed url="https://www.getambassador.io/user-guide/getting-started" %}
 
 ### Træfik
 
@@ -630,7 +630,7 @@ kubectl apply -f traefik-deployment.yaml
 
 This deployment will expose two NodePorts which allow access both to the ingress and to the web management interface.
 
-{% embed data="{\"url\":\"https://docs.traefik.io/configuration/backends/kubernetes/\",\"type\":\"link\",\"title\":\"Kubernetes Ingress - Træfik\",\"description\":\"Træfik Documentation\",\"icon\":{\"type\":\"icon\",\"url\":\"https://docs.traefik.io/img/traefik.icon.png\",\"aspectRatio\":0}}" %}
+{% embed url="https://docs.traefik.io/configuration/backends/kubernetes/" %}
 
 ## Additional Tools
 
@@ -686,9 +686,9 @@ Now you should be able to use Helm! Enjoy [😏](https://apps.timwhitlock.info/e
 
 As always, our sources are:
 
-{% embed data="{\"url\":\"https://github.com/kubernetes/helm/issues/2687\",\"type\":\"link\",\"title\":\"system:default not sufficient for helm, but works for kubectl · Issue \#2687 · kubernetes/helm\",\"description\":\"PROBLEM Helm reports lack of ACL&\#39;s as the reason that it can&\#39;t do list configmaps/pods/etc... However, the kubeconfig which it uses is valid. This is confusing b/c it mixes Tiller failures ...\",\"icon\":{\"type\":\"icon\",\"url\":\"https://github.com/fluidicon.png\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://avatars2.githubusercontent.com/u/826111?s=400&v=4\",\"width\":400,\"height\":400,\"aspectRatio\":1}}" %}
+{% embed url="https://github.com/kubernetes/helm/issues/2687" %}
 
-{% embed data="{\"url\":\"http://jayunit100.blogspot.com/2017/07/helm-on.html\",\"type\":\"link\",\"title\":\"Helm ON\",\"description\":\"Setting up helm on a secured kubernetes cluster.   Thanks to the heptio folks for helping me get this working by following up on https://git...\",\"icon\":{\"type\":\"icon\",\"url\":\"http://jayunit100.blogspot.com/favicon.ico\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://1.bp.blogspot.com/-zRLD0L7VbzE/WYOLeBt39oI/AAAAAAAAHQs/tnTWQKU-fZADMWJ2Ov1sxSpfbt8OuBKwACLcBGAs/w1200-h630-p-k-no-nu/Screen%2BShot%2B2017-08-03%2Bat%2B4.45.27%2BPM.png\",\"width\":868,\"height\":456,\"aspectRatio\":0.5253456221198156}}" %}
+{% embed url="http://jayunit100.blogspot.com/2017/07/helm-on.html" %}
 
 ### Helm for lazy people
 
@@ -702,5 +702,5 @@ bash <(curl -s https://raw.githubusercontent.com/Augugrumi/init-script/centos/he
 
 ### Networking
 
-{% embed data="{\"url\":\"https://medium.com/google-cloud/understanding-kubernetes-networking-pods-7117dd28727\",\"type\":\"link\",\"title\":\"Understanding kubernetes networking: pods\",\"description\":\"This post is going to attempt to demystify the several layers of networking operating in a kubernetes cluster. Kubernetes is a powerful…\",\"icon\":{\"type\":\"icon\",\"url\":\"https://cdn-images-1.medium.com/fit/c/304/304/1\*FUjLiCANvATKeaJEeg20Rw.png\",\"width\":152,\"height\":152,\"aspectRatio\":1},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://cdn-images-1.medium.com/max/2000/1\*5DymPHFgLmQ3WoEbbyM52Q.png\",\"width\":1600,\"height\":700,\"aspectRatio\":0.4375}}" %}
+{% embed url="https://medium.com/google-cloud/understanding-kubernetes-networking-pods-7117dd28727" %}
 
