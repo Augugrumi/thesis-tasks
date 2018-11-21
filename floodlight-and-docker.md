@@ -18,7 +18,7 @@ You have to install these components on your PC \(we assume you use Linux, other
 
 We assume you're proficient with AWS, so as you know when you use AWS API you need an access token and a secret key. Grab one from your IAM console, and be sure it can manage EC2 instances \(in particular, be sure `create` and `destroy` permissions are given\)
 
-## Getting your hand dirty
+## Getting your hands dirty
 
 After the initial configuration, it's time to messing around!
 
@@ -29,7 +29,7 @@ After you've set up successfully your machine, we're ready to start. Go on your 
 Now clone the `vagrantfiles` repository:
 
 ```bash
-$ git clone 
+$ git clone https://github.com/Augugrumi/vagrantfiles.git
 ```
 
 {% hint style="info" %}
